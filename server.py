@@ -75,7 +75,7 @@ while True:
                 response_status = "200 OK"
 
             elif path == "/hello":
-                esponse_body = "Hello!"
+                response_body = "Hello!"
                 response_status = "200 OK"
 
             else:
