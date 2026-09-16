@@ -9,6 +9,12 @@ s.listen()
 
 print(f"Server listening on {HOST}:{PORT}")
 
+routes = {
+    "/": "Welcome to the home page!",
+    "/about": "This is the about page.",
+    "/hello": "Hello!"
+}
+
 while True:
 
     client_socket, client_address = s.accept()
@@ -49,7 +55,6 @@ while True:
         print(f"Path: {path}")
         print(f"Version: {version}")
 
-        
 
         # Parse headers
         headers = {}
@@ -64,35 +69,23 @@ while True:
         # -------------------------
         # Build HTTP response
         # -------------------------
+        
 
-        if method == "GET":
-            if path == "/":
-                response_body = "Welcome to the home page!"
-                response_status = "200 OK"
+        if path not in routes:
+            response_body = "Not Found"
+            response_status = "404 Not Found"
 
-            elif path == "/about":
-                response_body = "This is the about page."
-                response_status = "200 OK"
-
-            elif path == "/hello":
-                response_body = "Hello!"
-                response_status = "200 OK"
-
-            else:
-                response_body = "Not Found"
-                response_status = "404 Not Found"
-
-        elif method == "POST":
-            response_body = "POST Method"
+        elif method == "POST" and path == "/hello":
+            response_body = f"Received: {body}"
             response_status = "200 OK"
 
-        elif method == "DELETE":
-            response_body = "DELETE Method"
-            response_status = "200 OK"
-
-        else:
+        elif method != "GET":
             response_body = "Method Not Allowed"
             response_status = "405 Method Not Allowed"
+
+        else:
+            response_body = routes[path]
+            response_status = "200 OK"
 
 
         response = (
