@@ -49,6 +49,8 @@ while True:
         print(f"Path: {path}")
         print(f"Version: {version}")
 
+        
+
         # Parse headers
         headers = {}
 
@@ -63,10 +65,21 @@ while True:
         # Build HTTP response
         # -------------------------
 
-        response_body = "Hello from my HTTP server!"
-
+        if(path == "/"):
+            response_body = "Welcome to the home page!"
+            response_status = "200 OK"
+        elif(path == "/hello"):
+            response_body = "Hello!"
+            response_status = "200 OK"
+        elif(path == "/about"):
+            response_body = "This is the about page."
+            response_status = "200 OK"
+        else:
+            response_body = "404 Not Found"
+            response_status = "404 Not Found"
+    
         response = (
-            "HTTP/1.1 200 OK\r\n"
+            f"HTTP/1.1 {response_status}\r\n"
             "Content-Type: text/plain\r\n"
             f"Content-Length: {len(response_body.encode())}\r\n"
             "\r\n"
@@ -75,6 +88,8 @@ while True:
 
         # HTTP is sent over the socket as bytes
         client_socket.sendall(response.encode())
+        print("\nRaw response:")
+        print(response)
 
     except Exception as e:
         print(f"Error occurred: {e}")
