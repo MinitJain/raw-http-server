@@ -65,19 +65,36 @@ while True:
         # Build HTTP response
         # -------------------------
 
-        if(path == "/"):
-            response_body = "Welcome to the home page!"
+        if method == "GET":
+            if path == "/":
+                response_body = "Welcome to the home page!"
+                response_status = "200 OK"
+
+            elif path == "/about":
+                response_body = "This is the about page."
+                response_status = "200 OK"
+
+            elif path == "/hello":
+                esponse_body = "Hello!"
+                response_status = "200 OK"
+
+            else:
+                response_body = "Not Found"
+                response_status = "404 Not Found"
+
+        elif method == "POST":
+            response_body = "POST Method"
             response_status = "200 OK"
-        elif(path == "/hello"):
-            response_body = "Hello!"
+
+        elif method == "DELETE":
+            response_body = "DELETE Method"
             response_status = "200 OK"
-        elif(path == "/about"):
-            response_body = "This is the about page."
-            response_status = "200 OK"
+
         else:
-            response_body = "404 Not Found"
-            response_status = "404 Not Found"
-    
+            response_body = "Method Not Allowed"
+            response_status = "405 Method Not Allowed"
+
+
         response = (
             f"HTTP/1.1 {response_status}\r\n"
             "Content-Type: text/plain\r\n"
@@ -88,8 +105,8 @@ while True:
 
         # HTTP is sent over the socket as bytes
         client_socket.sendall(response.encode())
-        print("\nRaw response:")
-        print(response)
+        #print("\nRaw response:")
+        #print(response)
 
     except Exception as e:
         print(f"Error occurred: {e}")
